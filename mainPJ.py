@@ -122,9 +122,8 @@ plt.show()
 # print("VIX:", vix.index.min(), "to", vix.index.max())
 # print("Treasury:", treasury.index.min(), "to", treasury.index.max())
 
-# ----------------------------
+
 # Model Comparison
-# ----------------------------
 
 from sklearn.linear_model import Ridge, Lasso
 from sklearn.preprocessing import PolynomialFeatures
