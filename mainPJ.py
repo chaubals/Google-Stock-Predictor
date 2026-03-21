@@ -171,8 +171,22 @@ plt.title("5-Day Forward Return Prediction (Model Comparison)")
 plt.show(block=False)
 plt.pause(.1)
 
-# Tune SVR
-svr_tuned = SVR(kernel="rbf", C=0.1, epsilon=0.01, gamma="scale")
-svr_tuned.fit(x_train_scaled, y_train)
-print("SVR (tuned) R^2:", svr_tuned.score(x_test_scaled, y_test))
+
+# Tune SVR (grid search)
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {
+"C": [0.1, 0.5, 1, 5, 10],
+"epsilon": [0.001, 0.005, 0.01, 0.02],
+"gamma": ["scale", "auto"],
+"kernel": ["rbf"]
+}
+grid = GridSearchCV(SVR(), param_grid, scoring="r2", cv=3)
+grid.fit(X_train_scaled, y_train)
+svr_tuned = grid.best_estimator_
+print("Best SVR params:", grid.best_params_)
+print("Best CV R^2:", grid.best_score_)
+print("SVR (tuned) test R^2:", svr_tuned.score(X_test_scaled, y_test))
+
+# Keep windows open
 plt.show()
